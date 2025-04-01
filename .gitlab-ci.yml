@@ -1,2 +1,0 @@
-# The Docker image that will be used to build your app
-image: unityci/editor:ubuntu-6000.0.30f1-webgl-1
