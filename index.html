@@ -27,7 +27,7 @@
 				streamingAssetsUrl: "StreamingAssets",
 				companyName: "Hochschule Heilbronn",
 				productName: "Kite 2",
-				productVersion: "0.22.1",
+				productVersion: "0.22.2",
 			};
 			var scaleToFit;
 			try
@@ -83,14 +83,12 @@
 			window.addEventListener('resize', onResize);
 			onResize();
 
-			// Style for mobile devices.
-			if (true) {
-				// Fill the whole browser client area with the game canvas.
-				const meta = document.createElement('meta');
-				meta.name = 'viewport';
-				meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-				document.getElementsByTagName('head')[0].appendChild(meta);
-			}
+
+			// Fill the whole browser client area with the game canvas.
+			const meta = document.createElement('meta');
+			meta.name = 'viewport';
+			meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+			document.getElementsByTagName('head')[0].appendChild(meta);
 		</script>
 	</div>
 </body>
