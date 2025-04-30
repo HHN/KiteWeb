@@ -83,13 +83,20 @@
 			window.addEventListener('resize', onResize);
 			onResize();
 
-
-			// Fill the whole browser client area with the game canvas.
-			const meta = document.createElement('meta');
-			meta.name = 'viewport';
-			meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-			document.getElementsByTagName('head')[0].appendChild(meta);
+			// Style for mobile devices.
+				// Fill the whole browser client area with the game canvas.
+				const meta = document.createElement('meta');
+				meta.name = 'viewport';
+				meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+				document.getElementsByTagName('head')[0].appendChild(meta);
 		</script>
+		</script>
+		<script type="text/javascript">
+		 function logMessage(message) {
+			 console.log(message);
+		 }
+	   </script>
+	
 	</div>
 </body>
 
