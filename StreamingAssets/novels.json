@@ -5979,10 +5979,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Intro"
-            ]
+            "playedPath": ""
         },
         {
             "id": 13,
@@ -11213,10 +11210,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Intro"
-            ]
+            "playedPath": ""
         },
         {
             "id": 2,
@@ -20467,11 +20461,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Vater",
-                "Mutter"
-            ]
+            "playedPath": ""
         },
         {
             "id": 11,
@@ -38092,10 +38082,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Kundin"
-            ]
+            "playedPath": ""
         },
         {
             "id": 9,
@@ -44136,10 +44123,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Investor"
-            ]
+            "playedPath": ""
         },
         {
             "id": 10,
@@ -63830,10 +63814,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Sachbearbeiter"
-            ]
+            "playedPath": ""
         },
         {
             "id": 4,
@@ -67924,10 +67905,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Notarin"
-            ]
+            "playedPath": ""
         },
         {
             "id": 3,
@@ -78108,10 +78086,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Journalistin"
-            ]
+            "playedPath": ""
         },
         {
             "id": 6,
@@ -89612,10 +89587,7 @@
                     "relevantBias": ""
                 }
             ],
-            "playedPath": "",
-            "characters": [
-                "Vermieter"
-            ]
+            "playedPath": ""
         }
     ]
 }
