@@ -11,23 +11,19 @@ pages:
   image: busybox
 
   script:
-    # sauber machen und neu anlegen
     - rm -rf public
     - mkdir public
 
-    # nur die wirklich benötigten Dateien
-    - cp index.html public/
-    - cp Kite2Web.data public/
-    - cp Kite2Web.framework.js public/
-    - cp Kite2Web.loader.js public/
-    - cp Kite2Web.wasm public/
+    - cp Build/index.html public/
+    - cp Build/Kite2Web.data public/
+    - cp Build/Kite2Web.framework.js public/
+    - cp Build/Kite2Web.loader.js public/
+    - cp Build/Kite2Web.wasm public/
 
-    # wenn du noch Mapping- und JSON-Dateien brauchst
-    - cp *.txt public/  || true
-    - cp *.json public/ || true
+    - cp StreamingAssets/*.txt public/  || true
+    - cp StreamingAssets/*.json public/ || true
 
-    # oder wenn du wirklich ein ganzes Verzeichnis in Build/ hast:
-    # - cp -r Build public/Build
+
 
   artifacts:
     paths:
