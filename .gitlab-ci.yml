@@ -24,12 +24,6 @@ pages:
     # optional: StreamingAssets
     - cp -r StreamingAssets public/StreamingAssets  || true
 
-    # 3) (wenn gewünscht) Brotli & Gzip
-    - |
-      find public/Build -type f ! \( -name '*.gz' -o -name '*.br' \) \
-        -exec gzip -9 -k {} \; \
-        -exec brotli --quality=11 -k {} \;
-
   artifacts:
     paths:
       - public
