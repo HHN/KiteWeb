@@ -9,7 +9,6 @@ image: alpine:latest
 
 pages:
   stage: deploy
-  environment: production
 
   # Wir brauchen gzip (ist an Bord) und brotli
   before_script:
@@ -31,10 +30,14 @@ pages:
     # 2) Für jede Datei: .gz und .br erzeugen
     - |
       for f in public/*; do
-        # überspringe bereits komprimierte Dateien
-        if [[ "$f" =~ \.(gz|br)$ ]]; then continue; fi
-        gzip -9 -k "$f"          # erzeugt file.ext.gz
-        brotli --quality=11 -k "$f"  # erzeugt file.ext.br
+        case "$f" in
+          *.gz|*.br) 
+            # schon komprimiert – überspringen
+            continue
+            ;;
+        esac
+        gzip -9 -k "$f"
+        brotli --quality=11 -k "$f"
       done
 
   artifacts:
