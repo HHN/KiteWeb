@@ -5,25 +5,37 @@
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Pages/HTML.gitlab-ci.yml
 
 # Full project: https://gitlab.com/pages/plain-html
+image: alpine:latest
+
 pages:
   stage: deploy
   environment: production
-  image: busybox
+
+  # Wir brauchen gzip (ist an Bord) und brotli
+  before_script:
+    - apk add --no-cache brotli
 
   script:
-    - rm -rf public
-    - mkdir public
+    # neues public-Verzeichnis
+    - rm -rf public && mkdir public
 
+    # 1) Kopiere deine Unity-Ausgabe
     - cp index.html public/
     - cp Build/Kite2Web.data public/
     - cp Build/Kite2Web.framework.js public/
     - cp Build/Kite2Web.loader.js public/
     - cp Build/Kite2Web.wasm public/
-
     - cp StreamingAssets/*.txt public/  || true
     - cp StreamingAssets/*.json public/ || true
 
-
+    # 2) Für jede Datei: .gz und .br erzeugen
+    - |
+      for f in public/*; do
+        # überspringe bereits komprimierte Dateien
+        if [[ "$f" =~ \.(gz|br)$ ]]; then continue; fi
+        gzip -9 -k "$f"          # erzeugt file.ext.gz
+        brotli --quality=11 -k "$f"  # erzeugt file.ext.br
+      done
 
   artifacts:
     paths:
