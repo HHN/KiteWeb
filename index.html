@@ -27,7 +27,7 @@
 				streamingAssetsUrl: "StreamingAssets",
 				companyName: "Hochschule Heilbronn",
 				productName: "Kite 2",
-				productVersion: "0.23.4",
+				productVersion: "0.23.3",
 			};
 			var scaleToFit;
 			try
@@ -55,7 +55,7 @@
 					w = window.innerWidth;
 					h = window.innerHeight;
 
-					var r = 2400 / 1080;
+					var r = 3088 / 1440;
 					if (w * r > window.innerHeight)
 					{
 						w = Math.min(w, Math.ceil(h / r));
@@ -64,8 +64,8 @@
 				} 
 				else
 				{
-					w = 1080;
-					h = 2400;
+					w = 1440;
+					h = 3088;
 				}
 
 				container.style.width = canvas.style.width = w + "px";
@@ -87,9 +87,8 @@
 				// Fill the whole browser client area with the game canvas.
 				const meta = document.createElement('meta');
 				meta.name = 'viewport';
-				meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+				meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=no';
 				document.getElementsByTagName('head')[0].appendChild(meta);
-		</script>
 		</script>
 		<script type="text/javascript">
 		 function logMessage(message) {
