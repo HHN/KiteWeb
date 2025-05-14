@@ -5,19 +5,30 @@
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Kite 2</title>
+
+	<!-- Statische Viewport-Meta für Mobilgeräte -->
+	<meta name="viewport"
+		  content="width=device-width,
+                 height=device-height,
+                 initial-scale=1.0,
+                 viewport-fit=cover,
+                 user-scalable=no,
+                 shrink-to-fit=yes">
+
 	<style>
-        html, body {
-            background: #0B1A2D;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            padding: 0;
-            margin: 0;
-        }
+		html, body {
+			background: #0B1A2D;
+			width: 100%;
+			height: 100%;
+			overflow: visible;
+			padding: 0;
+			margin: 0;
+		}
 
 		div#container {
 			background: transparent !important;
 			position: absolute;
+			box-sizing: border-box;
 		}
 
 			div#container canvas {
@@ -37,10 +48,10 @@
 					-ms-interpolation-mode: nearest-neighbor;
 				}
 
-		/* Nur auf Desktop (feiner Zeiger + Hover) weißen Rahmen um #container */
+		/* Weißer Rahmen rund um #container, nur auf Desktop */
 		@media (hover: hover) and (pointer: fine) {
 			div#container {
-				outline: 5px solid white; /* oder border: 5px solid white; + box-sizing: border-box; */
+				outline: 5px solid white;
 			}
 		}
 	</style>
