@@ -71,7 +71,7 @@
 				streamingAssetsUrl: "StreamingAssets",
 				companyName: "Hochschule Heilbronn",
 				productName: "Kite 2",
-				productVersion: "0.23.10",
+				productVersion: "0.23.11",
 			};
 			var scaleToFit;
 			try
@@ -99,7 +99,7 @@
 					w = window.innerWidth;
 					h = window.innerHeight;
 
-					var r = 560 / 365;
+					var r = 1000 / 600;
 					if (w * r > window.innerHeight)
 					{
 						w = Math.min(w, Math.ceil(h / r));
@@ -108,8 +108,8 @@
 				} 
 				else
 				{
-					w = 365;
-					h = 560;
+					w = 600;
+					h = 1000;
 				}
 
 				container.style.width = canvas.style.width = w + "px";
