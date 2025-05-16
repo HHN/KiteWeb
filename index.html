@@ -27,7 +27,7 @@
 
 		div#container {
 			background: transparent !important;
-			position: absolute;
+			position: fixed !important;  /* von absolute auf fixed */
 			box-sizing: border-box;
 		}
 
@@ -88,37 +88,38 @@
 				canvas.style.backgroundSize = '100% 1rem';
 			}
 			
-			// === Neue onResize(): Desktop mit 1080x1920-Ratio, Mobile full viewport ===
+			// === Neue onResize(): Desktop 365×560 lock, Mobile full viewport minus UI ===
 			function onResize()
 			{
 				var container = canvas.parentElement;
-				// visualViewport berücksichtigt Browser-UI (Header/Footer) auf Mobil
 				var vv = window.visualViewport || {};
 				var vw = vv.width  || window.innerWidth;
 				var vh = vv.height || window.innerHeight;
-				var ox = vv.offsetLeft || 0;
-				var oy = vv.offsetTop  || 0;
 
 				var w, h;
-				// Desktop: preserve 1080:1920
+				// Desktop: behalte 365×560
 				if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-					h = vh;
-					w = Math.floor(h * (1080/1920));
-					if (w > vw) {
+					var ratio = 365/560;
+					// Viewport ist breiter als Ratio?
+					if (vw / vh > ratio) {
+						h = vh;
+						w = vh * ratio;
+					} else {
 						w = vw;
-						h = Math.floor(w * (1920/1080));
+						h = vw / ratio;
 					}
 				}
-				// Mobile: full width & height
+				// Mobile: fülle komplett (minus Header/Footer)
 				else {
 					w = vw;
 					h = vh;
 				}
 
-				container.style.width  = w + "px";
-				container.style.height = h + "px";
-				container.style.left   = (ox + Math.floor((vw - w)/2)) + "px";
-				container.style.top    = (oy + Math.floor((vh - h)/2)) + "px";
+				// Setze Größe & zentriere
+				container.style.width  = Math.floor(w) + "px";
+				container.style.height = Math.floor(h) + "px";
+				container.style.left   = Math.floor((vw - w)/2) + "px";
+				container.style.top    = Math.floor((vh - h)/2) + "px";
 			}
 			// ====================================================================
 
