@@ -16,46 +16,37 @@
                  shrink-to-fit=yes">
 
 	<style>
-		/* === Anpassungen für Fullscreen auf Mobilgeräten === */
 		html, body {
 			background: #0B1A2D;
 			width: 100%;
 			height: 100%;
-			overflow: hidden;      /* kein Scrollen mehr */
+			overflow: visible;
 			padding: 0;
 			margin: 0;
 		}
 
 		div#container {
 			background: transparent !important;
-			position: fixed !important;   /* von absolute auf fixed */
-			top: 0;                       /* immer am oberen Rand */
-			left: 0;                      /* immer am linken Rand */
-			width: 100vw !important;      /* volle Breite */
-			height: 100vh !important;     /* volle Höhe */
+			position: absolute;
 			box-sizing: border-box;
 		}
 
-		div#container canvas {
-			position: absolute;
-			width: 100% !important;       /* Canvas füllt Container komplett */
-			height: 100% !important;
-		}
+			div#container canvas {
+				position: absolute;
+			}
 
-		div#container canvas[data-pixel-art="true"] {
-			/* Pixel-Art-Rendering beibehalten */
-			position: absolute;
-			image-rendering: optimizeSpeed;
-			image-rendering: -webkit-crisp-edges;
-			image-rendering: -moz-crisp-edges;
-			image-rendering: -o-crisp-edges;
-			image-rendering: crisp-edges;
-			image-rendering: -webkit-optimize-contrast;
-			image-rendering: optimize-contrast;
-			image-rendering: pixelated;
-			-ms-interpolation-mode: nearest-neighbor;
-		}
-		/* ================================================ */
+				div#container canvas[data-pixel-art="true"] {
+					position: absolute;
+					image-rendering: optimizeSpeed;
+					image-rendering: -webkit-crisp-edges;
+					image-rendering: -moz-crisp-edges;
+					image-rendering: -o-crisp-edges;
+					image-rendering: crisp-edges;
+					image-rendering: -webkit-optimize-contrast;
+					image-rendering: optimize-contrast;
+					image-rendering: pixelated;
+					-ms-interpolation-mode: nearest-neighbor;
+				}
 
 		/* Weißer Rahmen rund um #container, nur auf Desktop */
 		@media (hover: hover) and (pointer: fine) {
@@ -97,19 +88,39 @@
 				canvas.style.backgroundSize = '100% 1rem';
 			}
 			
-			// === Neue Fullscreen-Resize-Funktion ===
+			// === Neue onResize(): Desktop mit 1080x1920-Ratio, Mobile full viewport ===
 			function onResize()
 			{
-				var w = window.innerWidth;
-				var h = window.innerHeight;
 				var container = canvas.parentElement;
-				
+				// visualViewport berücksichtigt Browser-UI (Header/Footer) auf Mobil
+				var vv = window.visualViewport || {};
+				var vw = vv.width  || window.innerWidth;
+				var vh = vv.height || window.innerHeight;
+				var ox = vv.offsetLeft || 0;
+				var oy = vv.offsetTop  || 0;
+
+				var w, h;
+				// Desktop: preserve 1080:1920
+				if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+					h = vh;
+					w = Math.floor(h * (1080/1920));
+					if (w > vw) {
+						w = vw;
+						h = Math.floor(w * (1920/1080));
+					}
+				}
+				// Mobile: full width & height
+				else {
+					w = vw;
+					h = vh;
+				}
+
 				container.style.width  = w + "px";
 				container.style.height = h + "px";
-				canvas.style.width     = w + "px";
-				canvas.style.height    = h + "px";
+				container.style.left   = (ox + Math.floor((vw - w)/2)) + "px";
+				container.style.top    = (oy + Math.floor((vh - h)/2)) + "px";
 			}
-			// =======================================
+			// ====================================================================
 
 			createUnityInstance(canvas, config, progressHandler).then(function (instance)
 			{
