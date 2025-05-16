@@ -27,7 +27,7 @@
 
 		div#container {
 			background: transparent !important;
-			position: fixed !important;  /* von absolute auf fixed */
+			position: absolute;
 			box-sizing: border-box;
 		}
 
@@ -71,80 +71,85 @@
 				streamingAssetsUrl: "StreamingAssets",
 				companyName: "Hochschule Heilbronn",
 				productName: "Kite 2",
-				productVersion: "0.23.12",
+				productVersion: "0.23.9",
 			};
 			var scaleToFit;
-			try
-			{
+			try {
 				scaleToFit = !!JSON.parse("true");
 			} catch (e) {
 				scaleToFit = true;
 			}
-			
-			function progressHandler(progress)
-			{
+
+			function progressHandler(progress) {
 				var percent = progress * 100 + '%';
-				canvas.style.background = 'linear-gradient(to right, white, white ' + percent + ', transparent ' + percent + ', transparent) no-repeat center';
+				canvas.style.background =
+				  'linear-gradient(to right, white, white ' + percent +
+				  ', transparent ' + percent + ', transparent) no-repeat center';
 				canvas.style.backgroundSize = '100% 1rem';
 			}
-			
-			// === Neue onResize(): Desktop 365×560 lock, Mobile full viewport minus UI ===
-			function onResize()
-			{
+
+			// === Neue onResize(): Desktop 1 : 1.5, Mobile full visualViewport ===
+			function onResize() {
 				var container = canvas.parentElement;
-				var vv = window.visualViewport || {};
-				var vw = vv.width  || window.innerWidth;
-				var vh = vv.height || window.innerHeight;
+				var isDesktop = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-				var w, h;
-				// Desktop: behalte 365×560
-				if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-					var ratio = 365/560;
-					// Viewport ist breiter als Ratio?
-					if (vw / vh > ratio) {
-						h = vh;
-						w = vh * ratio;
-					} else {
-						w = vw;
-						h = vw / ratio;
-					}
-				}
-				// Mobile: fülle komplett (minus Header/Footer)
-				else {
-					w = vw;
+				var w, h, left, top;
+
+				if (isDesktop) {
+					// Volle Höhe des inneren Fensters
+					var vw = window.innerWidth;
+					var vh = window.innerHeight;
+					// Höhe = vh, Breite = vh / 1.5
 					h = vh;
+					w = Math.floor(h / 1.5);
+					// Falls Breite zu groß
+					if (w > vw) {
+						w = vw;
+						h = Math.floor(w * 1.5);
+					}
+					// Zentriert horizontal, oben bündig
+					left = Math.floor((vw - w) / 2);
+					top = 0;
+				} else {
+					// Voller sichtbarer Bereich auf Mobile (Header/Footer ausgeklammert)
+					var vv = window.visualViewport;
+					w = vv.width;
+					h = vv.height;
+					left = vv.offsetLeft;
+					top = vv.offsetTop;
 				}
 
-				// Setze Größe & zentriere
-				container.style.width  = Math.floor(w) + "px";
-				container.style.height = Math.floor(h) + "px";
-				container.style.left   = Math.floor((vw - w)/2) + "px";
-				container.style.top    = Math.floor((vh - h)/2) + "px";
+				// Einmaliges Setzen von Größe & Position
+				container.style.width  = w + "px";
+				container.style.height = h + "px";
+				container.style.left   = left + "px";
+				container.style.top    = top + "px";
+				canvas.style.width     = w + "px";
+				canvas.style.height    = h + "px";
 			}
 			// ====================================================================
 
-			createUnityInstance(canvas, config, progressHandler).then(function (instance)
-			{
+			createUnityInstance(canvas, config, progressHandler).then(function (instance) {
 				canvas = instance.Module.canvas;
 				onResize();
 			});
-			
+
 			window.addEventListener('resize', onResize);
 			onResize();
 
 			// Style for mobile devices.
-				// Fill the whole browser client area with the game canvas.
-				const meta = document.createElement('meta');
-				meta.name = 'viewport';
-				meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-				document.getElementsByTagName('head')[0].appendChild(meta);
+			// Fill the whole browser client area with the game canvas.
+			const meta = document.createElement('meta');
+			meta.name = 'viewport';
+			meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+			document.getElementsByTagName('head')[0].appendChild(meta);
 		</script>
 		</script>
 		<script type="text/javascript">
-		 function logMessage(message) {
-			 console.log(message);
-		 }
-	   </script>	
+			function logMessage(message) {
+				console.log(message);
+			}
+		</script>
 	</div>
 </body>
 
