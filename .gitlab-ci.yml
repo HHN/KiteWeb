@@ -40,9 +40,6 @@ pages_develop_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erzeug
   artifacts:
     paths:
       - public
-    # Optionale: Develop-Stände nach einer Woche ablaufen lassen
-    expire_in: 1 week
-  # Korrigierte Platzierung von 'pages' und 'path_prefix'
   pages:
     path_prefix: "develop"
   rules:
