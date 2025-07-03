@@ -1,33 +1,70 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/development/cicd/templates/
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Pages/HTML.gitlab-ci.yml
+stages:
+  - deploy
 
-# Full project: https://gitlab.com/pages/plain-html
+# Haupt-Pages-Job für den 'main' Branch (Release-URL)
 pages:
   stage: deploy
   image: alpine:latest
-
   before_script:
     - apk add --no-cache brotli gzip
-
   script:
     - rm -rf public && mkdir public
-
-    # 1) index.html ans Root
+    # 1) index.html an Root
     - cp index.html public/
-
     # 2) gesamtes Build-Verzeichnis unter public/Build
     - cp -r Build public/
-
     # optional: StreamingAssets
-    - cp -r StreamingAssets public/StreamingAssets  || true
-
+    - cp -r StreamingAssets public/StreamingAssets || true
   artifacts:
     paths:
       - public
-    expire_in: 1 week
-
+    # expire_in hier nicht gesetzt, da dies dein permanenter Release-Stand ist
   rules:
+    # Dieser Job läuft nur, wenn es sich um den Standard-Branch handelt (main)
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# Zusätzlicher Pages-Job für den 'develop' Branch (Develop-URL)
+pages_develop_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erzeugt
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache brotli gzip
+  script:
+    - rm -rf public && mkdir public
+    # 1) index.html an Root
+    - cp index.html public/
+    # 2) gesamtes Build-Verzeichnis unter public/Build
+    - cp -r Build public/
+    # optional: StreamingAssets
+    - cp -r StreamingAssets public/StreamingAssets || true
+  artifacts:
+    paths:
+      - public
+  pages:
+    path_prefix: "develop"
+  rules:
+    # Dieser Job läuft nur, wenn es sich um den 'develop' Branch handelt
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+  # Zusätzlicher Pages-Job für den 'standalone' Branch (Standalone-URL)
+pages_standalone_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erzeugt
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache brotli gzip
+  script:
+    - rm -rf public && mkdir public
+    # 1) index.html an Root
+    - cp index.html public/
+    # 2) gesamtes Build-Verzeichnis unter public/Build
+    - cp -r Build public/
+    # optional: StreamingAssets
+    - cp -r StreamingAssets public/StreamingAssets || true
+  artifacts:
+    paths:
+      - public
+  pages:
+    path_prefix: "standalone"
+  rules:
+    # Dieser Job läuft nur, wenn es sich um den 'standalone' Branch handelt
+    - if: '$CI_COMMIT_BRANCH == "standalone"'
