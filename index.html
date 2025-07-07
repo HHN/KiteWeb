@@ -60,17 +60,28 @@
 				console.log(message);
 			}
 		</script>
-		<script type="text/javascript">
-  (function() {
-    const originalLog = console.log;
-    console.log = function(...args) {
-      if (typeof args[0] === 'string' && args[0].startsWith('Updating TMP_Text component:')) {
-        return; // swallow it
-      }
-      originalLog.apply(console, args);
-    };
-  })();
-</script>
+		<script>
+    (function() {
+      // Welche Methoden wir patchen wollen
+      ["log","warn","error","info"].forEach(method => {
+        const orig = console[method];
+        console[method] = function(...args) {
+          // Filterkriterium: alle Strings, die mit diesem Präfix beginnen, unterdrücken
+          if (typeof args[0] === "string"
+           && args[0].startsWith("Updating TMP_Text component:")) {
+            return;
+          }
+          // auch PlatformGetStacktrace unterdrücken (falls gewünscht)
+          if (typeof args[0] === "string"
+           && args[0].startsWith("PlatformGetStacktrace")) {
+            return;
+          }
+          // sonst ganz normal weiterschreiben
+          orig.apply(console, args);
+        };
+      });
+    })();
+  </script>
 </head>
 
 <body>
