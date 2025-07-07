@@ -56,37 +56,31 @@
 		}
 	</style>
 		<script>
-    // Falls Module schon existiert, behalten wir die alten Methoden,
-    // sonst initialisieren wir ein leeres Objekt.
-    var Module = Module || {};
+    // Wir übergeben Module als Objekt mit preRun-Hook an den Loader
+    var Module = {
+      preRun: [function() {
+        // Original-Methoden sichern
+        Module._origPrint    = Module.print    || console.log.bind(console);
+        Module._origPrintErr = Module.printErr || console.error.bind(console);
 
-    // Originale print-Funktionen sichern
-    Module._origPrint   = Module.print   || function(msg){ console.log(msg); };
-    Module._origPrintErr= Module.printErr|| function(msg){ console.error(msg); };
+        // stdout-Filtern
+        Module.print = function(msg) {
+          if (typeof msg === "string"
+              && ( msg.startsWith("Updating TMP_Text component:")
+                 || msg.startsWith("PlatformGetStacktrace") ))
+            return;
+          Module._origPrint(msg);
+        };
 
-    // Überschreibe print (stdout)
-    Module.print = function(msg) {
-      // Filtere Zeilen, die mit TMP_Update beginnen
-      if (typeof msg === "string" && msg.startsWith("Updating TMP_Text component:")) {
-        return;
-      }
-      // Und Stacktrace-Einträge
-      if (typeof msg === "string" && msg.startsWith("PlatformGetStacktrace")) {
-        return;
-      }
-      // Alles andere normal weitergeben
-      Module._origPrint(msg);
-    };
-
-    // Überschreibe printErr (stderr)
-    Module.printErr = function(msg) {
-      if (typeof msg === "string" && msg.startsWith("Updating TMP_Text component:")) {
-        return;
-      }
-      if (typeof msg === "string" && msg.startsWith("PlatformGetStacktrace")) {
-        return;
-      }
-      Module._origPrintErr(msg);
+        // stderr-Filtern
+        Module.printErr = function(msg) {
+          if (typeof msg === "string"
+              && ( msg.startsWith("Updating TMP_Text component:")
+                 || msg.startsWith("PlatformGetStacktrace") ))
+            return;
+          Module._origPrintErr(msg);
+        };
+      }]
     };
   </script>
 	<script type="text/javascript">
@@ -94,12 +88,13 @@
 				console.log(message);
 			}
 		</script>
+		  <script src="Build/Kite2Web.loader.js"></script>
 </head>
 
 <body>
 	<div id="container">
 		<canvas id="game-canvas" data-pixel-art="false"></canvas>
-		<script src="Build/Kite2Web.loader.js"></script>
+		<!-- <script src="Build/Kite2Web.loader.js"></script> -->
 		<script>
 			var canvas = document.querySelector("#game-canvas");
 			var config =
@@ -182,7 +177,6 @@
 			meta.name = 'viewport';
 			meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
 			document.getElementsByTagName('head')[0].appendChild(meta);
-		</script>
 		</script>
 	</div>
 </body>
