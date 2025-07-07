@@ -55,33 +55,45 @@
 			}
 		}
 	</style>
+		<script>
+    // Falls Module schon existiert, behalten wir die alten Methoden,
+    // sonst initialisieren wir ein leeres Objekt.
+    var Module = Module || {};
+
+    // Originale print-Funktionen sichern
+    Module._origPrint   = Module.print   || function(msg){ console.log(msg); };
+    Module._origPrintErr= Module.printErr|| function(msg){ console.error(msg); };
+
+    // Überschreibe print (stdout)
+    Module.print = function(msg) {
+      // Filtere Zeilen, die mit TMP_Update beginnen
+      if (typeof msg === "string" && msg.startsWith("Updating TMP_Text component:")) {
+        return;
+      }
+      // Und Stacktrace-Einträge
+      if (typeof msg === "string" && msg.startsWith("PlatformGetStacktrace")) {
+        return;
+      }
+      // Alles andere normal weitergeben
+      Module._origPrint(msg);
+    };
+
+    // Überschreibe printErr (stderr)
+    Module.printErr = function(msg) {
+      if (typeof msg === "string" && msg.startsWith("Updating TMP_Text component:")) {
+        return;
+      }
+      if (typeof msg === "string" && msg.startsWith("PlatformGetStacktrace")) {
+        return;
+      }
+      Module._origPrintErr(msg);
+    };
+  </script>
 	<script type="text/javascript">
 			function logMessage(message) {
 				console.log(message);
 			}
 		</script>
-		<script>
-    (function() {
-      // Welche Methoden wir patchen wollen
-      ["log","warn","error","info"].forEach(method => {
-        const orig = console[method];
-        console[method] = function(...args) {
-          // Filterkriterium: alle Strings, die mit diesem Präfix beginnen, unterdrücken
-          if (typeof args[0] === "string"
-           && args[0].startsWith("Updating TMP_Text component:")) {
-            return;
-          }
-          // auch PlatformGetStacktrace unterdrücken (falls gewünscht)
-          if (typeof args[0] === "string"
-           && args[0].startsWith("PlatformGetStacktrace")) {
-            return;
-          }
-          // sonst ganz normal weiterschreiben
-          orig.apply(console, args);
-        };
-      });
-    })();
-  </script>
 </head>
 
 <body>
