@@ -24,7 +24,7 @@ pages:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 # Zusätzlicher Pages-Job für den 'develop' Branch (Develop-URL)
-pages_develop_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erzeugt
+pages_develop_preview:
   stage: deploy
   image: alpine:latest
   before_script:
@@ -47,8 +47,8 @@ pages_develop_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erzeug
     # Dieser Job läuft nur, wenn es sich um den 'develop' Branch handelt
     - if: '$CI_COMMIT_BRANCH == "develop"'
 
-  # Zusätzlicher Pages-Job für den 'standalone' Branch (Standalone-URL)
-pages_standalone_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erzeugt
+# Zusätzlicher Pages-Job für den 'standalone' Branch (Standalone-URL)
+pages_standalone_preview:
   stage: deploy
   image: alpine:latest
   before_script:
@@ -70,3 +70,27 @@ pages_standalone_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erz
   rules:
     # Dieser Job läuft nur, wenn es sich um den 'standalone' Branch handelt
     - if: '$CI_COMMIT_BRANCH == "standalone"'
+
+# Zusätzlicher Pages-Job für den 'AI_TRAQC' Branch (AI_TRAQC-URL)
+pages_aitraqc_preview:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache brotli gzip
+  script:
+    - rm -rf public && mkdir public
+    # 1) index.html an Root
+    - cp index.html public/
+    # 2) gesamtes Build-Verzeichnis unter public/Build
+    - cp -r Build public/
+    # optional: StreamingAssets
+    - cp -r StreamingAssets public/StreamingAssets || true
+  artifacts:
+    paths:
+      - public
+  pages:
+    path_prefix: "AI_TRAQC"
+    expire_in: never
+  rules:
+    # Dieser Job läuft nur, wenn es sich um den 'AI_TRAQC' Branch handelt
+    - if: '$CI_COMMIT_BRANCH == "AI_TRAQC"'
