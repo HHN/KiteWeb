@@ -1,24 +1,41 @@
+# Kite2Web
 
--- zResponsive template for WebGL --
+This repository contains the web build artifacts and supporting runtime data for the KITE project. Use the files in `Build/` to run the web player, and find runtime mappings, prompts and generated feedback in `StreamingAssets/`.
 
+What is in this repo
+- `Build/` — Web player build files (e.g. `Kite2Web.framework.js`, `Kite2Web.js`) and related assets for serving the project on the web.
+- `StreamingAssets/` — Runtime mapping files, prompts, novels metadata and generated feedback used by the player (examples: `novels.json`, `Prompt.txt`, `feedbacks/`).
+- `Images/` — Supplementary images used by the web build or documentation.
+- `index.html` — Local entry page to load the web player (if present).
+- `ChangeLog.txt`, `Readme.txt` — repo metadata and notes.
 
-* DO NOT CHANGE THE TOOL PATH! -> Assets/WebGLTemplates/zResponsive
+Quick local preview (static server)
+1) From a shell in this repository root you can serve the files locally. Example using Python (if installed):
 
+   python -m http.server 8000
 
-* HOW TO USE?
+Then open `http://localhost:8000/index.html` in a browser to load the web player.
 
-1� Go to Edit -> Project Settings -> Player.
-	
-2� Select 'Web Settings'. *You must have the 'WebGL Build Support' module installed in your Unity editor.
-	
-3� Expand 'Resolution and Presentation'.
-	
-4� Select 'zResponsive' option at 'WebGL Template' section.
-	
-5� Set properties with your custom values:
-	- Background: requires a color in RGBA format. For example white #FFFFFF ->  https://imagecolorpicker.com/color-code/ffffff
-	- Optimize for pixel art: set true or false to optimize for pixel art.
-	- Scale to fit: set true or false to scale to fit.
+Licenses
+- If present in the repository root, see `LICENSE_SOFTWARE.txt` (code) and `LICENSE_ASSETS.txt` (content) for license details.
 
+---
 
-* Thanks for use it, have an amazing day!
+Dieses Repository enthält die Web-Build-Artefakte und unterstützende Laufzeitdaten für das KITE-Projekt. Verwenden Sie die Dateien in „Build/“, um den Webplayer auszuführen, und finden Sie Laufzeit-Mappings, Prompts und generierte Feedbacks in „StreamingAssets/“.
+
+Was befindet sich in diesem Repository
+- `Build/` — Web-Player-Build-Dateien (z. B. `Kite2Web.framework.js`, `Kite2Web.js`) und zugehörige Assets zum Hosten im Web.
+- `StreamingAssets/` — Laufzeit-Mapping-Dateien, Prompts, Metadaten der Novels und generiertes Feedback (z. B. `novels.json`, `Prompt.txt`, `feedbacks/`).
+- `Images/` — Zusätzliche Bilder.
+- `index.html` — Lokale Einstiegsseite zum Laden des Webplayers (falls vorhanden).
+- `ChangeLog.txt`, `Readme.txt` — Metadaten und Hinweise zum Repo.
+
+Schnelle lokale Vorschau (statischer Server)
+1) Über eine Shell im Repository-Root können Sie die Dateien lokal bereitstellen. Beispiel mit Python (sofern installiert):
+
+   python -m http.server 8000
+
+Öffnen Sie anschließend `http://localhost:8000/index.html` in einem Browser, um den Webplayer zu laden.
+
+Lizenzen
+- Sofern vorhanden, siehe `LICENSE_SOFTWARE.txt` (Code) und `LICENSE_ASSETS.txt` (Inhalte) im Repository-Root für Details.
