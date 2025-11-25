@@ -68,3 +68,26 @@ pages_standalone_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erz
   rules:
     # Dieser Job läuft nur, wenn es sich um den 'standalone' Branch handelt
     - if: '$CI_COMMIT_BRANCH == "standalone"'
+
+  # Zusätzlicher Pages-Job für den 'lab01' Branch (Lab01-URL)
+pages_lab01_preview: # Umbenannt, damit er keine Konflikte mit "pages:" erzeugt
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache brotli gzip
+  script:
+    - rm -rf public && mkdir public
+    # 1) index.html an Root
+    - cp index.html public/
+    # 2) gesamtes Build-Verzeichnis unter public/Build
+    - cp -r Build public/
+    # optional: StreamingAssets
+    - cp -r StreamingAssets public/StreamingAssets || true
+  artifacts:
+    paths:
+      - public
+  pages:
+    path_prefix: "lab01"
+  rules:
+    # Dieser Job läuft nur, wenn es sich um den 'lab01' Branch handelt
+    - if: '$CI_COMMIT_BRANCH == "lab01"'
