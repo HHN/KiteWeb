@@ -1646,22 +1646,31 @@ var ASM_CONSTS = {
     }
 
   function _CopyTextToClipboard(textPtr) {
-          // Den Text aus dem übergebenen Zeiger lesen
-          var text = UTF8ToString(textPtr);
-          if (navigator.clipboard) {
-              navigator.clipboard.writeText(text)
-                  .then(function() { console.log('Text wurde in die Zwischenablage kopiert.') })
-                  .catch(function(err) { console.error('Kopieren fehlgeschlagen:', err); });
-          } else {
-              // Fallback: Ein Textfeld erstellen, Text selektieren und kopieren
-              var textArea = document.createElement("textarea");
-              textArea.value = text;
-              document.body.appendChild(textArea);
-              textArea.select();
-              document.execCommand('copy');
-              document.body.removeChild(textArea);
-          }
+      // Den Text aus dem übergebenen Zeiger lesen
+      var encodedText = UTF8ToString(textPtr);
+      
+      // NEU: Den Text dekodieren
+      var decodedText = encodedText;
+      try {
+          decodedText = decodeURIComponent(encodedText);
+      } catch (e) {
+          console.error("Fehler beim Dekodieren des Textes in JS:", e);
       }
+
+      if (navigator.clipboard) {
+        // Den dekodierten Text verwenden
+        navigator.clipboard.writeText(decodedText).then(function() { console.log('Text wurde in die Zwischenablage kopiert.') })
+          .catch(function(err) { console.error('Kopieren fehlgeschlagen:', err); });
+          } else {
+              // Fallback: Ein Textfeld erstellen, den dekodierten Text verwenden
+              var textArea = document.createElement("textarea");
+              textArea.value = decodedText;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+          }
+      }
 
   function _GetJSLoadTimeInfo(loadTimePtr) {
     loadTimePtr = (loadTimePtr >> 2);
