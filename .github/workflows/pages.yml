@@ -1,0 +1,63 @@
+name: Deploy Web App to GitHub Pages
+
+on:
+  push:
+    branches:
+      # Löst den Workflow bei Push auf allen relevanten Branches aus
+      - main
+      - develop
+      - standalone
+      - lab01
+  workflow_dispatch:
+
+# Erlaubt GitHub Actions, den gh-pages Branch zu erstellen/aktualisieren
+permissions:
+  contents: write 
+  pages: write # Kann für die peaceiris Action optional sein, aber ist sicherer
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Öffentliche Artefaktstruktur erstellen (GitLab CI Logik)
+      # Wir erstellen den 'public' Ordner und befüllen ihn wie in Ihrer GitLab CI
+      - name: Create Public Artifact Folder
+        run: |
+          rm -rf public && mkdir public
+          cp index.html public/
+          # Kopiert das gesamte Build-Verzeichnis
+          cp -r Build public/
+          # Kopiert optional StreamingAssets (falls vorhanden)
+          cp -r StreamingAssets public/StreamingAssets || true
+
+      # 2. Bestimmen des Ziel-Unterordners
+      - name: Determine Branch Subpath
+        id: subpath
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          # Wenn der Branch nicht 'main' ist, setzen wir den Unterordner-Pfad
+          if [[ "$BRANCH_NAME" != "main" ]]; then
+            echo "SUB_PATH=$BRANCH_NAME" >> $GITHUB_ENV
+          else
+            echo "SUB_PATH=" >> $GITHUB_ENV
+          fi
+          
+      # 3. Deployment in den gh-pages Branch (Peaceiris Action)
+      # Diese Action pusht den Inhalt von 'public' in den 'gh-pages' Branch
+      - name: Deploy to GitHub Pages (Peaceiris)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          # TOKEN ist notwendig, um in den gh-pages Branch zu pushen
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Der Ordner, den wir hochladen wollen (der generierte 'public' Ordner)
+          publish_dir: ./public
+          # Der Ziel-Branch von GitHub Pages (muss gh-pages sein)
+          publish_branch: gh-pages
+          # Das Zielverzeichnis INNERHALB des gh-pages Branches 
+          # (z.B. /develop für Previews)
+          destination_dir: ${{ env.SUB_PATH }}
