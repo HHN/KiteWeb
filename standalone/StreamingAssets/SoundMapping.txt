@@ -1,5 +1,0 @@
-WaterPouring:0
-LeaveScene:1
-TelephoneCall:2
-PaperRustling:3
-ManLaughing:4
