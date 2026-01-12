@@ -1,0 +1,60 @@
+name: Deploy Web App to GitHub Pages
+
+on:
+  push:
+    branches:
+      # Löst den Workflow bei Push auf allen relevanten Branches aus
+      - main
+      - develop
+      - standalone
+      - lab01
+      - ai_traqc
+  workflow_dispatch:
+
+# Erlaubt GitHub Actions, den gh-pages Branch zu erstellen/aktualisieren
+permissions:
+  contents: write 
+  pages: write # Kann für die peaceiris Action optional sein, aber ist sicherer
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Öffentliche Artefaktstruktur erstellen (GitLab CI Logik)
+      # Wir erstellen den 'public' Ordner und befüllen ihn wie in Ihrer GitLab CI
+      - name: Create Public Artifact Folder
+        run: |
+          rm -rf public && mkdir public
+          cp index.html public/
+          # Kopiert das gesamte Build-Verzeichnis
+          cp -r Build public/
+          # Kopiert optional StreamingAssets (falls vorhanden)
+          cp -r StreamingAssets public/StreamingAssets || true
+
+      # 2. Bestimmen des Ziel-Unterordners (Sauberere Logik)
+      - name: Determine Branch Subpath
+        id: subpath
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "SUB_PATH=." >> $GITHUB_ENV
+          else
+            # Wandelt Branch-Namen in Kleinschreibung um & entfernt Sonderzeichen
+            CLEAN_NAME=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')
+            echo "SUB_PATH=$CLEAN_NAME" >> $GITHUB_ENV
+          fi
+          
+      # 3. Deployment mit Schutz vor Überschreiben
+      - name: Deploy to GitHub Pages (Peaceiris)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          destination_dir: ${{ env.SUB_PATH }}
+          keep_files: true  # Verhindert, dass andere Branches gelöscht werden
+          enable_jekyll: false # Beschleunigt Deployment & verhindert Formatfehler
