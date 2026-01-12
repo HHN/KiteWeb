@@ -8,6 +8,7 @@ on:
       - develop
       - standalone
       - lab01
+      - ai_traqc
   workflow_dispatch:
 
 # Erlaubt GitHub Actions, den gh-pages Branch zu erstellen/aktualisieren
