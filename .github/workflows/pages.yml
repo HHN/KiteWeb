@@ -27,21 +27,34 @@ jobs:
 
       - name: Inject API Key into Build Artifacts
         run: |
-          echo "Suche nach Platzhalter in allen Dateien..."
-          # 1. Rekursive Suche in allen relevanten Dateien (.js, .json, .wasm, .html)
-          # Wir suchen im gesamten Arbeitsverzeichnis (.), um Pfadfehler zu vermeiden.
-          find . -type f \( -name "*.js" -o -name "*.json" -o -name "*.html" -o -name "*.wasm" \) -exec sed -i "s/KITE_SECRET_PLACEHOLDER_12345/${{ secrets.KITE_API_KEY }}/g" {} +
-
-          # 2. Kontrolle: Wurde etwas ersetzt?
-          # Wir suchen nach dem geheimen Key (nur die ersten 3 Zeichen zur Sicherheit im Log)
-          KEY_START=$(echo "${{ secrets.KITE_API_KEY }}" | cut -c1-3)
-          if grep -r "$KEY_START" .; then
-            echo "ERFOLG: Der Key-Anfang '$KEY_START...' wurde in den Dateien gefunden."
-          else
-            echo "FEHLER: Der Key wurde nicht injiziert. Platzhalter oder Pfad falsch?"
-            # Zeigt die Ordnerstruktur an, um Pfadfehler zu finden
+          echo "--- START: API Key Injection ---"
+          
+          # 1. Suche: In welchen Dateien steckt der Platzhalter überhaupt?
+          echo "Suche nach Platzhalter 'KITE_SECRET_PLACEHOLDER_12345'..."
+          MATCHES=$(grep -rl "KITE_SECRET_PLACEHOLDER_12345" . || true)
+          
+          if [ -z "$MATCHES" ]; then
+            echo "WARNUNG: Platzhalter wurde in keiner Datei gefunden!"
+            echo "Stelle sicher, dass Unity 'Compression Format' auf 'None' steht."
             ls -R
+          else
+            echo "Platzhalter gefunden in:"
+            echo "$MATCHES"
+            
+            # 2. Ersetzung durchführen
+            echo "$MATCHES" | xargs sed -i "s/KITE_SECRET_PLACEHOLDER_12345/${{ secrets.KITE_API_KEY }}/g"
+            echo "Ersetzung abgeschlossen."
+            
+            # 3. Verifizierung (Zeigt die ersten 3 Zeichen des echten Keys zur Bestätigung)
+            KEY_PREVIEW=$(echo "${{ secrets.KITE_API_KEY }}" | cut -c1-3)
+            echo "Verifiziere Injektion (Suche nach '$KEY_PREVIEW...')..."
+            if grep -rq "$KEY_PREVIEW" .; then
+              echo "ERFOLG: Der Key wurde erfolgreich injiziert."
+            else
+              echo "FEHLER: Key wurde nach sed-Befehl nicht gefunden!"
+            fi
           fi
+          echo "--- ENDE: API Key Injection ---"
 
       # 1. Öffentliche Artefaktstruktur erstellen (GitLab CI Logik)
       # Wir erstellen den 'public' Ordner und befüllen ihn wie in Ihrer GitLab CI
