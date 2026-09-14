@@ -6203,9 +6203,9 @@
         {
             "id": 2,
             "title": "Hilfeplanung mit Tochter",
-            "description": "Es ist ein vorbereitendes Einzelgespräch einer Fachkraft des Jugendamts mit der 15-jährigen Mira.",
+            "description": "Es ist ein vorbereitendes Einzelgespräch einer Fachkraft des Jugendamts mit der 15-jährigen Lina.",
             "feedback": "",
-            "context": "Es ist ein vorbereitendes Einzelgespräch einer Fachkraft des Jugendamts mit der 15-jährigen Mira. Anwesend sind ausschließlich Mira und die Fachkraft. Für Miras Familie besteht bereits eine Familienhilfe; in zwei Wochen findet ein Hilfeplangespräch statt. Die Fachkraft möchte erfahren, wie Mira ihre aktuelle Situation erlebt und welche Themen aus ihrer Sicht für die weitere Hilfeplanung wichtig sind.",
+            "context": "Es ist ein vorbereitendes Einzelgespräch einer Fachkraft des Jugendamts mit der 15-jährigen Lina. Anwesend sind ausschließlich Lina und die Fachkraft. Für Linas Familie besteht bereits eine Familienhilfe; in zwei Wochen findet ein Hilfeplangespräch statt. Die Fachkraft möchte erfahren, wie Lina ihre aktuelle Situation erlebt und welche Themen aus ihrer Sicht für die weitere Hilfeplanung wichtig sind.",
             "novelEvents": [
                 {
                     "id": "InitialCharacterJoinsEvent001",
