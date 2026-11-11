@@ -56,32 +56,31 @@
 			transition: opacity .18s ease; /* erster Sprung: schnell zu Schwarz */
 		}
 
-		/* Branding: Claim/Logo/Balken prozentgenau nach Mock (Mitte 50/60/65% der Höhe, gleiche Breite) */
+		/* Branding: kompakter, vertikal zentrierter Block (kleine Lücken wie im Mock) */
 		.branding{
 			position: absolute;
-			inset: 0;
+			left: 0; width: 100%;
+			top: 50%;
+			transform: translateY(-50%);
+			display: flex; flex-direction: column; align-items: center;
 		}
 		.claim{
-			position: absolute; left: 50%; top: 50%;
-			transform: translate(-50%, -50%);
 			width: clamp(200px, 50%, 380px);
 			height: auto; display: block;
 		}
 		.logo{
-			position: absolute; left: 50%; top: 60%;
-			transform: translate(-50%, -50%);
 			width: clamp(200px, 50%, 380px);
 			height: auto; display: block;
+			margin-top: 14px;
 			filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
 		}
 
 		.progress{
-			position: absolute; left: 50%; top: 65%;
-			transform: translate(-50%, -50%);
 			width: clamp(200px, 50%, 380px);
 			height: var(--progress-height, 14px);
 			background:#fff; border-radius:8px; overflow:hidden;
 			box-shadow: 0 6px 18px rgba(0,0,0,.25);
+			margin-top: 10px;
 		}
 		.progress__fill{
 			width:0%; height:100%; background:var(--accent-green, #00A65C);
@@ -220,6 +219,6 @@
 		function logMessage(m){ console.log(m); }
 	</script>
 </div>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" nonce="XOpjwHFdRwfTCaEn+qFF8A==" data-cf-beacon='{"version":"2024.11.0","token":"36b4216ae2dc4d5488c249161e71fe1e","spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" nonce="Cd58sxX5tyz6E57rGotRmA==" data-cf-beacon='{"version":"2024.11.0","token":"36b4216ae2dc4d5488c249161e71fe1e","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
