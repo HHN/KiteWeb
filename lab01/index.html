@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Kite 2</title>
-	<link rel="icon" href="StreamingAssets/kite_II__Bildmarke_RGB_favicon.svg" type="image/svg+xml" />
+	<link rel="icon" href="StreamingAssets/R-KISO_Logo_Screen_RGB.png" type="image/png" />
 
 	<meta name="viewport"
 		  content="width=device-width,height=device-height,initial-scale=1.0,viewport-fit=cover,user-scalable=no,shrink-to-fit=yes" />
@@ -36,7 +36,7 @@
 		@media (hover: hover) and (pointer: fine) { #container { outline: 5px solid white; } }
 		@media (hover: none)  and (pointer: coarse){ #container { outline: none; } }
 
-		/* Loading-Overlay (mit Claim, R-KISO-Logo, Progress) */
+		/* Loading-Overlay (mit Logo, Wortmarke, Progress) */
 		#loading{
 			position: absolute; inset: 0;
 			z-index:10; pointer-events:none; transition:opacity .35s ease;
@@ -56,32 +56,37 @@
 			transition: opacity .18s ease; /* erster Sprung: schnell zu Schwarz */
 		}
 
-		/* Branding: kompakter, vertikal zentrierter Block (kleine Lücken wie im Mock) */
-		.branding{
+		/* Bereich unterhalb des Kreises: Vollflaechiges Overlay, Elemente absolut wie in der MainMenuScene */
+		.below{
 			position: absolute;
-			left: 0; width: 100%;
-			top: 50%;
-			transform: translateY(-50%);
-			display: flex; flex-direction: column; align-items: center;
+			inset: 0;
 		}
+
+		/* Statt der alten Wortmarke: Claim + R-KISO-Logo (an MainMenuScene im Play Mode angeglichen:
+		   beide 700px von 1080 = 65% Breite, zentriert; reale Geraetepositionen laut Szenen-Geometrie + Fingertest: Claim 48% / Logo 52.5%, Balken bei 58% (Block zuvor 3.25% zu tief) */
 		.claim{
-			width: clamp(200px, 50%, 380px);
+			position: absolute; left: 50%; top: 48%;
+			transform: translate(-50%, -50%);
+			width: 65%;
 			height: auto; display: block;
 		}
 		.logo{
-			width: clamp(200px, 50%, 380px);
+			position: absolute; left: 50%; top: 52.5%;
+			transform: translate(-50%, -50%);
+			width: 65%;
 			height: auto; display: block;
-			margin-top: 14px;
 			filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
 		}
 
 		.progress{
-			width: clamp(200px, 50%, 380px);
+			position: absolute; left: 50%; top: 58%;
+			transform: translate(-50%, -50%);
+			width: 65%;
 			height: var(--progress-height, 14px);
 			background:#fff; border-radius:8px; overflow:hidden;
 			box-shadow: 0 6px 18px rgba(0,0,0,.25);
-			margin-top: 10px;
 		}
+
 		.progress__fill{
 			width:0%; height:100%; background:var(--accent-green, #00A65C);
 			border-radius:8px 0 0 8px; transition: width .2s ease;
@@ -98,9 +103,10 @@
 
 <body>
 <div id="container">
-	<!-- Ladebild: Claim + R-KISO-Logo + Progress -->
+	<!-- Ladebild -->
 	<div id="loading" class="preinit" role="status" aria-live="polite" aria-label="Ladevorgang">
-		<div class="branding">
+		<!-- Unterhalb des Kreises: Wortmarke + Progress -->
+		<div class="below">
 			<img class="claim" src="StreamingAssets/R-KISO_Logo_Screen_negativ-weiss.png" alt="reallabor ki im sozialwesen" />
 			<img class="logo" src="StreamingAssets/R-KISO_Logo_Screen_RGB.png" alt="R-KISO-Logo" />
 			<div class="progress" aria-hidden="true">
@@ -114,8 +120,8 @@
 
 	<canvas id="game-canvas" data-pixel-art="false"></canvas>
 
-			<!-- Unity ersetzt die Platzhalter beim Build -->
-	 <script>
+	<!-- Unity ersetzt die Platzhalter beim Build -->
+	<script>
 		window.KITE_CONFIG = {
 			passphrase: "cradle-reconcile-bazooka-rewrap-clique-tiptop"
 		};
@@ -134,7 +140,7 @@
 			streamingAssetsUrl: "StreamingAssets",
 			companyName: "Hochschule Heilbronn",
 			productName: "Kite 2",
-			productVersion: "1.7.3",
+			productVersion: "1.7.5",
 			autoSyncPersistentDataPath: true
 		};
 
@@ -177,7 +183,7 @@
 			}
 		}
 
-		/* Container berechnen (1:2 auf Desktop) */
+		/* Container berechnen & CSS-Variablen setzen (26,7% Höhe, Topkante 20,6%) */
 		function onResize(){
 			var container = canvas.parentElement;
 			var isDesktop = matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -219,6 +225,6 @@
 		function logMessage(m){ console.log(m); }
 	</script>
 </div>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" nonce="Cd58sxX5tyz6E57rGotRmA==" data-cf-beacon='{"version":"2024.11.0","token":"36b4216ae2dc4d5488c249161e71fe1e","spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" nonce="alnewG2gq5t8gI9x0pmDlw==" data-cf-beacon='{"version":"2024.11.0","token":"36b4216ae2dc4d5488c249161e71fe1e","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
